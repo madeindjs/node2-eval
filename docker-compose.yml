@@ -1,14 +1,5 @@
 version: '2'
 services:
-    # nodejs:
-    #     build:
-    #         context: ./docker/
-    #         dockerfile: Dockerfile-nodejs
-    #     ports:
-    #         - 3000:3000
-    #     volumes:
-    #         - "./server:/home/node/projet"
-
     secret-server:
         build:
             context: ./docker/
@@ -17,6 +8,14 @@ services:
             - 3000:3000
         volumes:
             - "./secret-server:/home/node/projet"
+    secret-history-server:
+        build:
+            context: ./docker/
+            dockerfile: Dockerfile-nodejs
+        ports:
+            - 4002:3000
+        volumes:
+            - "./secret-history-server:/home/node/projet"
     client:
         image: nginx:latest
         container_name: client
