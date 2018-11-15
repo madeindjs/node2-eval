@@ -1,0 +1,9 @@
+ul.log-list {
+  display: flex;
+  flex-direction: row;
+  padding: 0
+
+}
+ul.log-list li {
+  display: inline
+}
