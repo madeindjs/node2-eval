@@ -4,7 +4,7 @@ Node 2
 - @madeindjs: Alexandre Rousseau
 - @davidcaraiannis: David Caraiannis
 - @kaskwoute: Antoinne Peyrin
-- @sp33dy: Erwan Kruntz
+- @sp33dy: Erwan Kreutz
 
 Toute documentation autorisée.
 
