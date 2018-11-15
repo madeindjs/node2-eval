@@ -18,13 +18,13 @@ function decrypt(buffer) {
 
 app.get('/secret', (req, res) => {
   fs.readFile(secretPath, 'utf8', function(err, data) {
-    if (err.code == "ENOENT") {
+    if (err && err.code == "ENOENT") {
       console.error(err)
       return res.send(
         `Secret is not set. Please set it at <a href="/secret-update">/secret-update</a>`,
         500
       )
-    } else {
+    } else if (err) {
       console.error(err)
       return res.send(err, 500)
     }
