@@ -34,13 +34,12 @@ app.get('/', function(req, res) {
 
   // Switch json / simple string
   if (req.accepts('json')) {
+    data = `${hours}:${minutes}:${seconds}`
     res
       .header({
         'Content-Type': 'application/json',
       })
-      .json({
-        now: data
-      })
+      .send(data)
   } else {
     res.send(`<p style="color:blue">${data}</p>`)
   }

@@ -8,5 +8,5 @@ cd /home/node/projet/
 echo "--------------"
 echo "Launch App"
 echo "--------------"
-npm install --production
+npm ci
 npm run dev
