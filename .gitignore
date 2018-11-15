@@ -1,2 +1,3 @@
 node_modules
 secret-server/data/secret.txt
+secret-history-server/log/servers-log.json
