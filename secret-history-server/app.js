@@ -5,29 +5,27 @@ const fetch = require('node-fetch');
 
 let getTime = new Promise((resolve, reject) => { 
     fetch('http://localhost:4000/')
-      .then(checkStatus)
+      .catch(err => reject(err))
       .then(res => resolve(res))
 })
 
 let getSecret = new Promise((resolve, reject) => { 
   fetch('http://localhost:4001/secret')
-      .then(checkStatus)
+      .catch(err => reject(err))
       .then(res => resolve(res))
 })
 
-Promise.all([getTime, getSecret]).then(values => { 
-  console.log(values)
-}, reason => {
-  console.log(reason)
-});
+setInterval(function(){
+  Promise.all([getTime, getSecret])
+  .then(values => { 
+    console.log(values)
+  })
+  .catch(error => {
+    console.error(error)
+  })
+}, 5000)
 
-function checkStatus(res) {
-    if (res.ok) { // res.status >= 200 && res.status < 300
-        return res;
-    } else {
-        throw MyCustomError(res.statusText);
-    }
-}
+
 
 app.get('/', function (req, res) {
   res.send('Hello World!')
