@@ -2,6 +2,12 @@ const express = require('express')
 const app = express()
 const port = 4000
 const fetch = require('node-fetch');
+var fs = require('fs-extra');
+
+var logFile = 'log/servers-log.json'
+fs.createFile(logFile, function(err) {
+  console.error(err); 
+})
 
 let getTime = new Promise((resolve, reject) => { 
     fetch('http://localhost:4000/')
