@@ -14,7 +14,7 @@ services:
             context: ./docker/
             dockerfile: Dockerfile-nodejs
         ports:
-            - 3000:3000
+            - 4001:3000
         volumes:
             - "./secret-server:/home/node/projet"
     client:

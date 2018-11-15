@@ -9,6 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "crypto": "^1.0.1",
+    "express": "^4.16.4",
+    "fs-extra": "^7.0.1",
+    "node-fetch": "^2.3.0",
     "nodemon": "^1.18.6"
   }
 }
