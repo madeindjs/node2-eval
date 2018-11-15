@@ -1,12 +1,18 @@
 const express = require('express')
 const fs = require('fs-extra')
 const path = require('path');
+const bodyParser = require('body-parser')
 
 const secretPath = path.join(__dirname, 'data', 'secret.txt')
 
 const app = express()
 const port = 3000
 
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+app.use(express.json())
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
@@ -28,7 +34,7 @@ app.get('/secret', (req, res) => {
     if (err && err.code == "ENOENT") {
       console.error(err)
       return res.send(
-        `Secret is not set. Please set it at <a href="/secret-update">/secret-update</a>`,
+        `Secret is not set. Please set it at PUT <a href="/secret">/secret-update</a>`,
         500
       )
     } else if (err) {
@@ -40,8 +46,8 @@ app.get('/secret', (req, res) => {
   })
 })
 
-app.get('/secret-update', (req, res) => {
-  let content = req.query.content
+app.put('/secret', (req, res) => {
+  let content = req.body.content
 
   if (!content) {
     return res.send('You must specify content param', 400)

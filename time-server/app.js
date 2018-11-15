@@ -30,16 +30,17 @@ app.get('/', function(req, res) {
     seconds = "0" + seconds
 
   // Set string with time
-  let data = `${hours} : ${minutes} : ${seconds}`
+  let data = `${hours}:${minutes}:${seconds}`
 
   // Switch json / simple string
   if (req.accepts('json')) {
-    data = `${hours}:${minutes}:${seconds}`
     res
       .header({
         'Content-Type': 'application/json',
       })
-      .send(data)
+      .send({
+        now: data
+      })
   } else {
     res.send(`<p style="color:blue">${data}</p>`)
   }
