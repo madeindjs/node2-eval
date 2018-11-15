@@ -1,7 +1,6 @@
-
 const express = require('express')
 const app = express()
-const port = 4000;
+const port = 3000
 
 const jsonMiddleware = express.json()
 app.use(jsonMiddleware)
@@ -14,24 +13,29 @@ app.use(function(req, res, next) {
 })
 
 // Return hours minutes and seconds
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   let date = new Date()
   let hours = date.getHours()
-  if(hours < 10)
-    hours = "0" + hours;
+  if (hours < 10)
+    hours = "0" + hours
   let minutes = date.getMinutes()
-  if(minutes < 10)
-    minutes = "0" + minutes;
+  if (minutes < 10)
+    minutes = "0" + minutes
   let seconds = date.getSeconds()
-  if(seconds < 10)
-    seconds = "0" + seconds;
+  if (seconds < 10)
+    seconds = "0" + seconds
   let data = hours + ":" + minutes + ":" + seconds
 
   if (req.accepts('json')) {
-    data = [
-      {hours: hours},
-      {minutes: minutes},
-      {seconds: seconds},
+    data = [{
+        hours: hours
+      },
+      {
+        minutes: minutes
+      },
+      {
+        seconds: seconds
+      },
     ]
     res
       .header({
