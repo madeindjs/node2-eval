@@ -1,4 +1,5 @@
 const INTERVAL = 1
+const PER_PAGE = 10
 
 Vue.component('log-time', {
   data: function() {
@@ -18,7 +19,8 @@ Vue.component('log', {
     return {
       display: true,
       reversed: false,
-      logs: []
+      logs: [],
+      page: 0,
     }
   },
   mounted: function() {
@@ -26,10 +28,21 @@ Vue.component('log', {
   },
   computed: {
     logSorted: function() {
+
+      let cloneLogs = this.logs.map(a => a)
+
       if (this.reversed) {
-        return this.logs.map(a => a).reverse()
+        cloneLogs.reverse()
       }
-      return this.logs
+
+      let start = this.page * PER_PAGE
+      let end = start + PER_PAGE
+
+      return cloneLogs.slice(start, end)
+
+    },
+    numberOfPage: function() {
+      return Math.floor(this.logs.length / PER_PAGE) + 1
     }
   },
   methods: {
@@ -55,6 +68,15 @@ Vue.component('log', {
       <label>hide/show</label>
 
       <br/>
+
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button
+          v-for="i in numberOfPage"
+          type="button"
+          class="btn btn-secondary"
+          @click="page = i + 1"
+        >{{i}}</button>
+      </div>
 
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-secondary" @click="reversed = !reversed">Toggle sort</button>
@@ -83,7 +105,7 @@ const app = new Vue({
     secret: null,
     urls: [
       'http://localhost:4001/secret/',
-      // 'http://localhost:4002/',
+      'http://localhost:4002/',
       'http://localhost:4000/',
     ]
   },
