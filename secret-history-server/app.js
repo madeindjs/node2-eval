@@ -31,7 +31,11 @@ let getLogs = ((count) => {
  */
 let logDatas = ((data) => {
   fs.readJson(logFile, function(err, oldData) {
-    oldData.push(data)
+    if (typeof oldData != 'object') {
+      oldData = [data]
+    } else {
+      oldData.push(data)
+    }
     fs.outputJsonSync(logFile, oldData)
   })
 })
@@ -75,7 +79,6 @@ setInterval(() =>  {
       } catch(e) {
         time = response[0]
       }
-      console.log({ time: time, secret: response[1]})
       return { time: time, secret: response[1]}
     })
     .then((data) => {
