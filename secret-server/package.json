@@ -1,0 +1,11 @@
+{
+  "name": "secret-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon -L app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
