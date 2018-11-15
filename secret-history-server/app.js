@@ -69,7 +69,7 @@ setInterval(() =>  {
   */
   Promise.all([getTime, getSecret])
     .then(response => {
-      console.log({ time: response[0], secret: response[1]})
+      console.log({ time: JSON.parse(response[0]).now, secret: response[1]})
       return { time: response[0], secret: response[1]}
     })
     .catch((error) => {
