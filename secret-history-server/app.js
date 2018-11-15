@@ -31,48 +31,55 @@ let getLogs = ((count) => {
  */
 let logDatas = ((data) => {
   fs.readJson(logFile, function(err, oldData) {
-    oldData.push(data)
+    if (typeof oldData != 'object') {
+      oldData = [data]
+    } else {
+      oldData.push(data)
+    }
     fs.outputJsonSync(logFile, oldData)
   })
 })
 
-/**
- * A promise to an api endpoint to get the actual time-server
- * @param  {Promise} (resolve, reject)
- * @return {Promise}             
- */
-let getTime = new Promise((resolve, reject) => {
-  fetch('http://time-server:3000')
-    .then(res => resolve(res.text()))
-    .catch(err => reject(err))
-})
-
-/**
- * A promise to an api endpoint to get the actual secret password
- * @param  {Promise} (resolve, reject)
- * @return {Promise}             
- */
-let getSecret = new Promise((resolve, reject) => {
-  fetch('http://secret-server:3000/secret')
-    .then(res => resolve(res.text()))
-    .catch(err => reject(err))
-})
-
-/**
- * Function wrapped in a setInterval function to trigger the api
- * every 5 seconds, get back the datas and wrap it to
- * the right format
- * @param  {setInterval}    
- * @param  {Promise.all()}    
- * @return {void}
- */
 setInterval(() =>  {
+   /**
+   * A promise to an api endpoint to get the actual time-server
+   * @param  {Promise} (resolve, reject)
+   * @return {Promise}             
+   */
+  let getTime = new Promise((resolve, reject) => {
+    fetch('http://time-server:3000')
+      .then(res => resolve(res.text()))
+      .catch(err => resolve("ERROR"))
+  })
+
+  /**
+   * A promise to an api endpoint to get the actual secret password
+   * @param  {Promise} (resolve, reject)
+   * @return {Promise}             
+   */
+  let getSecret = new Promise((resolve, reject) => {
+    fetch('http://secret-server:3000/secret')
+      .then(res => resolve(res.text()))
+      .catch(err => resolve("ERROR"))
+  })
+
+  /**
+  * Function wrapped in a setInterval function to trigger the api
+  * every 5 seconds, get back the datas and wrap it to
+  * the right format
+  * @param  {setInterval}    
+  * @param  {Promise.all()}    
+  * @return {void}
+  */
   Promise.all([getTime, getSecret])
     .then(response => {
-      return { time: response[0], secret: response[1]}
-    })
-    .catch((error) => {
-      console.error(error)
+      let time = ""
+      try{
+        time = JSON.parse(response[0]).now
+      } catch(e) {
+        time = response[0]
+      }
+      return { time: time, secret: response[1]}
     })
     .then((data) => {
       logDatas(data)
