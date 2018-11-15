@@ -35,7 +35,8 @@ app.get('/', function(req, res) {
   // Switch json / simple string
   if (req.accepts('json')) {
     data = `${hours}:${minutes}:${seconds}`
-    res.header({
+    res
+      .header({
         'Content-Type': 'application/json',
       })
       .send(data)

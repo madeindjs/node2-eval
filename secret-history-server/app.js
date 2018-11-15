@@ -14,12 +14,12 @@ fs.createFile(logFile)
  * @param  {Integer} the amount of wanted datas      
  * @return {[Array]} the wanted datas
  */
-let getLogs = ((count, callback) => {
+let getLogs = ((count) => {
   fs.readJson(logFile, function(err, datas){
     if (count != undefined) {
-      callback(datas.slice(datas.length - count, datas.length))
+      return datas.slice(datas.length - count, datas.length)
     }
-    callback(datas)
+    return datas
   })
 })
 
@@ -82,9 +82,9 @@ setInterval(() =>  {
 
 
 app.get('/logs/:count', function(req, res) {
-  getLogs(req.params.count, ((logs) => {
-    res.json(logs)
-  }))
+  fs.readJson(logFile, function(err, datas){
+    res.json(datas.slice(datas.length - req.params.count, datas.length))
+  })
 })
 
 
