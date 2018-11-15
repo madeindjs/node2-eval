@@ -9,7 +9,7 @@ Vue.component('log-time', {
   mounted: function() {
     setInterval(() => this.createdAt = this.createdAt + INTERVAL, INTERVAL * 1000)
   },
-  template: `<span @click="createdAt = 0" class="badge badge-secondary badge-pill">{{ createdAt }} s</span>`
+  template: `<span @click="createdAt = 0" class="badge badge-secondary badge-pill">since {{ createdAt }}s</span>`
 })
 
 Vue.component('log', {
@@ -67,14 +67,34 @@ const app = new Vue({
   el: '#app',
   data: {
     title: 'Hello Vue!',
+    secret: null,
     urls: [
       'http://localhost:4001/secret/',
-      'http://localhost:4002/',
+      // 'http://localhost:4002/',
       'http://localhost:4000/',
     ]
   },
+  methods: {
+    changeSecret: function() {
+      axios.put('http://localhost:4001/secret/', {
+          content: this.secret
+        })
+        .then(resp => {
+          alert('Updated :)')
+        })
+        .catch(error => console.error(error))
+    }
+  },
   template: `
     <div class="row">
+
+      <form class="col-12" @submit.prevent="changeSecret">
+        <label for="name">Contenu du secret</label>
+        <textarea name="content" class="form-control" v-model="secret">
+        </textarea>
+        <input type="submit" class="btn btn" />
+      </form>
+
       <log v-bind:url="url" v-for="url in urls" />
     </div>
   `,
