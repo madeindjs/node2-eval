@@ -13,7 +13,14 @@ Vue.component('log', {
     fetchServer: function() {
       // debugger;
       axios.get(this.url)
-        .then(resp => this.logs.push(resp.data))
+        .then(resp => {
+          if (this.logs.length === 100) {
+            this.logs.shift()
+          }
+
+          this.logs.push(resp.data)
+
+        })
         .catch(error => console.error(error))
     },
   },
