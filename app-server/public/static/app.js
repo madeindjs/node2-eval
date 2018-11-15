@@ -1,3 +1,17 @@
+const INTERVAL = 1
+
+Vue.component('log-time', {
+  data: function() {
+    return {
+      createdAt: 0
+    }
+  },
+  mounted: function() {
+    setInterval(() => this.createdAt = this.createdAt + INTERVAL, INTERVAL * 1000)
+  },
+  template: `<span @click="createdAt = 0" class="badge badge-secondary badge-pill">{{ createdAt }} s</span>`
+})
+
 Vue.component('log', {
   props: ['url'],
   data: function() {
@@ -28,9 +42,23 @@ Vue.component('log', {
     <div class="col">
       <h2>{{ url }}</h2>
 
-      <ul class="list-inline">
-        <li class="list-inline-item" v-for="log in logs"> {{ log }}</li>
+      <input type="checkbox" v-model="display" />
+      <label>hide/show</label>
+
+      <br/>
+
+      <ul class="list-group" v-if="display">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+          v-for="log in logs"
+        >
+          {{ log }}
+          <log-time />
+        </li>
       </ul>
+      <button class="btn btn-default" @click="display = !display" >
+      bouton Antoine
+      </button>
     </div>
   `
 })
@@ -46,7 +74,7 @@ const app = new Vue({
     ]
   },
   template: `
-    <div>
+    <div class="row">
       <log v-bind:url="url" v-for="url in urls" />
     </div>
   `,
