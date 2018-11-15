@@ -1,0 +1,26 @@
+# ---------------------------------------------
+# nodeContainer
+# ---------------------------------------------
+
+FROM node:latest
+
+##
+## expose
+##
+EXPOSE 3000
+
+##
+## Set workdir
+##
+WORKDIR /home/node/projet
+
+##
+## COPY entrypoint script
+##
+COPY entrypoint.sh /tmp/entrypoint.sh
+
+##
+## Chmod and run entrypoint
+##
+RUN chmod +x /tmp/entrypoint.sh
+ENTRYPOINT [ "sh", "-c", "/tmp/entrypoint.sh" ]
