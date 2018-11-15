@@ -17,11 +17,20 @@ Vue.component('log', {
   data: function() {
     return {
       display: true,
+      reversed: false,
       logs: []
     }
   },
   mounted: function() {
     setInterval(() => this.fetchServer(), 1000)
+  },
+  computed: {
+    logSorted: function() {
+      if (this.reversed) {
+        return this.logs.map(a => a).reverse()
+      }
+      return this.logs
+    }
   },
   methods: {
     fetchServer: function() {
@@ -47,18 +56,22 @@ Vue.component('log', {
 
       <br/>
 
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-secondary" @click="reversed = !reversed">Toggle sort</button>
+        <button class="btn btn-default" @click="display = !display" >
+          bouton Antoine
+        </button>
+      </div>
+
       <ul class="list-group" v-if="display">
         <li
           class="list-group-item d-flex justify-content-between align-items-center"
-          v-for="log in logs"
+          v-for="log in logSorted"
         >
           {{ log }}
           <log-time />
         </li>
       </ul>
-      <button class="btn btn-default" @click="display = !display" >
-      bouton Antoine
-      </button>
     </div>
   `
 })
