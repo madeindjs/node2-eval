@@ -36,39 +36,40 @@ let logDatas = ((data) => {
   })
 })
 
-/**
- * A promise to an api endpoint to get the actual time-server
- * @param  {Promise} (resolve, reject)
- * @return {Promise}             
- */
-let getTime = new Promise((resolve, reject) => {
-  fetch('http://time-server:3000')
-    .then(res => resolve(res.text()))
-    .catch(err => reject(err))
-})
-
-/**
- * A promise to an api endpoint to get the actual secret password
- * @param  {Promise} (resolve, reject)
- * @return {Promise}             
- */
-let getSecret = new Promise((resolve, reject) => {
-  fetch('http://secret-server:3000/secret')
-    .then(res => resolve(res.text()))
-    .catch(err => reject(err))
-})
-
-/**
- * Function wrapped in a setInterval function to trigger the api
- * every 5 seconds, get back the datas and wrap it to
- * the right format
- * @param  {setInterval}    
- * @param  {Promise.all()}    
- * @return {void}
- */
 setInterval(() =>  {
+   /**
+   * A promise to an api endpoint to get the actual time-server
+   * @param  {Promise} (resolve, reject)
+   * @return {Promise}             
+   */
+  let getTime = new Promise((resolve, reject) => {
+    fetch('http://time-server:3000')
+      .then(res => resolve(res.text()))
+      .catch(err => reject("ERROR"))
+  })
+
+  /**
+   * A promise to an api endpoint to get the actual secret password
+   * @param  {Promise} (resolve, reject)
+   * @return {Promise}             
+   */
+  let getSecret = new Promise((resolve, reject) => {
+    fetch('http://secret-server:3000/secret')
+      .then(res => resolve(res.text()))
+      .catch(err => reject("ERROR"))
+  })
+
+  /**
+  * Function wrapped in a setInterval function to trigger the api
+  * every 5 seconds, get back the datas and wrap it to
+  * the right format
+  * @param  {setInterval}    
+  * @param  {Promise.all()}    
+  * @return {void}
+  */
   Promise.all([getTime, getSecret])
     .then(response => {
+      console.log({ time: response[0], secret: response[1]})
       return { time: response[0], secret: response[1]}
     })
     .catch((error) => {
