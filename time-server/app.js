@@ -16,17 +16,24 @@ app.use(function(req, res, next) {
 // Return hours minutes and seconds
 app.get('/', function (req, res) {
   let date = new Date()
+
+  // Get time
   let hours = date.getHours()
+  let minutes = date.getMinutes()
+  let seconds = date.getSeconds()
+
+  // In case of number between 1-9, add 0
   if(hours < 10)
     hours = "0" + hours;
-  let minutes = date.getMinutes()
   if(minutes < 10)
     minutes = "0" + minutes;
-  let seconds = date.getSeconds()
   if(seconds < 10)
     seconds = "0" + seconds;
+
+  // Set string with time
   let data = hours + ":" + minutes + ":" + seconds
 
+  // Switch json / simple string
   if (req.accepts('json')) {
     data = [
       {hours: hours},
