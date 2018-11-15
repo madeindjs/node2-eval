@@ -45,7 +45,7 @@ setInterval(() =>  {
   let getTime = new Promise((resolve, reject) => {
     fetch('http://time-server:3000')
       .then(res => resolve(res.text()))
-      .catch(err => reject("ERROR"))
+      .catch(err => resolve("ERROR"))
   })
 
   /**
@@ -56,7 +56,7 @@ setInterval(() =>  {
   let getSecret = new Promise((resolve, reject) => {
     fetch('http://secret-server:3000/secret')
       .then(res => resolve(res.text()))
-      .catch(err => reject("ERROR"))
+      .catch(err => resolve("ERROR"))
   })
 
   /**
@@ -69,11 +69,14 @@ setInterval(() =>  {
   */
   Promise.all([getTime, getSecret])
     .then(response => {
-      console.log({ time: JSON.parse(response[0]).now, secret: response[1]})
-      return { time: response[0], secret: response[1]}
-    })
-    .catch((error) => {
-      console.error(error)
+      let time = ""
+      try{
+        time = JSON.parse(response[0]).now
+      } catch(e) {
+        time = response[0]
+      }
+      console.log({ time: time, secret: response[1]})
+      return { time: time, secret: response[1]}
     })
     .then((data) => {
       logDatas(data)
