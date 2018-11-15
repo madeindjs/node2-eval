@@ -22,9 +22,12 @@ services:
             dockerfile: Dockerfile-nodejs
         ports:
             - 4002:3000
+        links:
+            - "secret-server"
+            - "time-server"
         volumes:
             - "./secret-history-server:/home/node/projet"
-    
+
     time-server:
         build:
             context: ./docker/
